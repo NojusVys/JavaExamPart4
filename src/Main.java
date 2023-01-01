@@ -3,6 +3,7 @@ import java.util.Scanner;
 public class Main {
     public static void main (String [] args){
         Biudzetas b1 = new Biudzetas();
+        Failas failas = new Failas();
         Scanner sc = new Scanner(System.in);
         boolean runProgram = true;
 
@@ -18,7 +19,9 @@ public class Main {
                 case "6" -> b1.atspausdintiPajamuIrasus();
                 case "7" -> b1.atspausdintiIslaiduIrasus();
                 case "8" -> b1.visiIrasai();
-                case "0" -> {
+                case "9" -> failas.issaugotiDuomenis(sc, b1.getIrasai());
+                case "0" -> b1.pakeistiIrasus(failas.gautiDuomenis(sc));
+                case "*" -> {
                     System.out.println("Programa baigiama.");
                     runProgram = false;
                 }
@@ -38,7 +41,9 @@ public class Main {
                 6 - atspausdinti pajamas
                 7 - atspausdinti išlaidas
                 8 - visi irasai
-                0 - nutraukia programos veikimą
+                9 - išsaugoti duomenis
+                0 - nuskaityti naujus duomenis iš failo
+                * - nutraukia programos veikimą
                 """);
     }
 }

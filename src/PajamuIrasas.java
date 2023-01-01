@@ -6,6 +6,7 @@ public class PajamuIrasas extends Irasas {
     private String pajamuKategorija;
     private String data;
 
+
     public PajamuIrasas(int id, double suma, String kategorija,
                         boolean arIBanka, String papildomaInfo,
                         String pajamuTipas, String irasoTipas) {
@@ -15,22 +16,26 @@ public class PajamuIrasas extends Irasas {
         this.pajamuTipas = pajamuTipas;
     }
 
-    public String getData(){
-        return data;
+    public PajamuIrasas(int id) {
+        super(id);
     }
 
-    public void setData(){
+    public String getCsvValue() {
+        return String.format("%s,%s,%s,%s,%s,%s,%s,%s\n", this.getId(), this.getSuma(), this.isArIBanka(),
+                this.getPapildomaInfo(), this.getIrasoTipas(), this.getData(),
+                this.getPajamuKategorija(), this.getPajamuTipas());
+    }
+
+
+    public void setData() {
         LocalDate t = LocalDate.now();
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         this.data = t.format(timeFormatter);
     }
 
-    public String getPajamuTipas() {
-        return pajamuTipas;
-    }
-
-    public String getPajamuKategorija() {
-        return pajamuKategorija;
+    public void setData(LocalDate t) {
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        this.data = t.format(timeFormatter);
     }
 
     public void setPajamuTipas(String pajamuTipas) {
@@ -89,5 +94,18 @@ public class PajamuIrasas extends Irasas {
     @Override
     public String toString() {
         return super.toString().concat(String.format(Pranesimai.FORMATAS.pranesimas, data, pajamuKategorija, pajamuTipas));
+    }
+
+
+    public String getPajamuTipas() {
+        return pajamuTipas;
+    }
+
+    public String getPajamuKategorija() {
+        return pajamuKategorija;
+    }
+
+    public String getData() {
+        return data;
     }
 }

@@ -15,6 +15,10 @@ public class Irasas {
         this.irasoTipas = recordType;
     }
 
+    public Irasas(int id) {
+        this.id = id;
+    }
+
     public void setArIBanka(boolean arIBanka) {
         this.arIBanka = arIBanka;
     }
