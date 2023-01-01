@@ -14,12 +14,27 @@ public class IslaiduIrasas extends Irasas {
         setDataIrLaikas();
     }
 
+    public IslaiduIrasas(int id) {
+        super(id);
+    }
+
+    public String getCsvValue(){
+        return String.format("%s,%s,%s,%s,%s,%s,%s,%s\n", this.getId(), this.getSuma(), this.isArIBanka(),
+                this.getPapildomaInfo(), this.getIslaiduKategorija(), this.getDataIrLaikas(),
+                this.getIslaiduKategorija(), this.getIslaiduTipas());
+    }
+
     public String getDataIrLaikas() {
         return dataIrLaikas;
     }
 
     public void setDataIrLaikas() {
         LocalDateTime t = LocalDateTime.now();
+        DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        this.dataIrLaikas = t.format(timeFormatter);
+    }
+
+    public void setDataIrLaikas(LocalDateTime t) {
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         this.dataIrLaikas = t.format(timeFormatter);
     }

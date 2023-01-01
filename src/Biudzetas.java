@@ -23,22 +23,22 @@ public class Biudzetas {
         System.out.println("Pasirinkite");
         String type = pasirinkimas(sc, "[1] - Pajamų įrašas", "[2] - Išlaidų įrašas");
         System.out.println(Pranesimai.SUMA.pranesimas);
-        double suma = Double.parseDouble(sc.nextLine());
+        double suma = validacijaDouble(sc);
         System.out.println(Pranesimai.KATEGORIJA.pranesimas);
-        String kategorija = sc.nextLine();
+        String kategorija = validacijaString(sc);
         System.out.println(Pranesimai.AR_I_BANKA.pranesimas);
         boolean atsiskaitymoBudasBankas = Boolean.parseBoolean(sc.nextLine());
         System.out.println(Pranesimai.PAPILDOMA_INFO.pranesimas);
-        String papildomaInfo = sc.nextLine();
+        String papildomaInfo = validacijaString(sc);
         if (type.equals("1")) {
             String irasoTipas = "pajamos";
             System.out.println(Pranesimai.PAJAMU_TIPAS.pranesimas);
-            String pajamuTipas = sc.nextLine();
+            String pajamuTipas = validacijaString(sc);
             return new PajamuIrasas(id, suma, kategorija, atsiskaitymoBudasBankas, papildomaInfo, pajamuTipas, irasoTipas);
         } else if (type.equals("2")) {
             String irasoTipas = "islaidos";
             System.out.println(Pranesimai.ISLAIDU_TIPAS.pranesimas);
-            String islaiduTipas = sc.nextLine();
+            String islaiduTipas = validacijaString(sc);
             return new IslaiduIrasas(id, suma, kategorija, atsiskaitymoBudasBankas, papildomaInfo, islaiduTipas, irasoTipas);
         } else {
             return null;
@@ -47,15 +47,15 @@ public class Biudzetas {
 
     private String pasirinkimas(Scanner sc, String... choices) {
         String result = "";
-        boolean isTrue = true;
-        while (isTrue) {
+        boolean runLoop = true;
+        while (runLoop) {
             for (String choice : choices) {
                 System.out.println(choice);
             }
             try {
                 if (Integer.parseInt(sc.nextLine()) > 0 && Integer.parseInt(sc.nextLine()) <= choices.length) {
                     result = sc.nextLine();
-                    isTrue = false;
+                    runLoop = false;
                 } else {
                         System.out.println(Pranesimai.BLOGA_IVESTIS.pranesimas);
                 }
@@ -66,7 +66,7 @@ public class Biudzetas {
         return result;
     }
 
-    public int gautiVisasPajamas() {
+    public double gautiVisasPajamas() {
         int suma = 0;
         for (Irasas irasa : irasas) {
             if (irasa instanceof PajamuIrasas) {
@@ -76,7 +76,7 @@ public class Biudzetas {
         return suma;
     }
 
-    public int gautiVisasIslaidas() {
+    public double gautiVisasIslaidas() {
         int suma = 0;
         for (Irasas irasa : irasas) {
             if (irasa instanceof IslaiduIrasas) {
@@ -102,7 +102,7 @@ public class Biudzetas {
         String modificationLevel = pasirinkimas(sc, "[1] - Dalinis įrašo keitimas", "[2] - Pilnas įrašo keitimas");
         visiIrasai();
         System.out.println(Pranesimai.REDAGUOTI.pranesimas);
-        int id = Integer.parseInt(sc.nextLine());
+        int id = validacijaInt(sc);
         if (irasas.stream().anyMatch(o -> id == o.getId())) {
             if (modificationLevel.equals("1")) {
                 Irasas irasas1 = gautiIrasa(id);
@@ -333,7 +333,62 @@ public class Biudzetas {
         }
         return false;
     }
+
+    private double validacijaDouble(Scanner sc) {
+        double suma = 0;
+        boolean isNotDouble = true;
+        while (isNotDouble) {
+            try {
+                suma = Double.parseDouble(sc.nextLine());
+                isNotDouble = false;
+            } catch (NumberFormatException e) {
+                System.out.println(Pranesimai.BLOGA_IVESTIS.pranesimas);
+            }
+        }
+        return suma;
+    }
+
+    private int validacijaInt(Scanner sc) {
+        int id = 0;
+        boolean isNotInt = true;
+        while (isNotInt) {
+            try {
+                id = Integer.parseInt(sc.nextLine());
+                isNotInt = false;
+            } catch (NumberFormatException e) {
+                System.out.println(Pranesimai.BLOGA_IVESTIS.pranesimas);
+            }
+        }
+        return id;
+    }
+
+    private String validacijaString(Scanner sc) {
+        boolean isString = false;
+        String input = "";
+        while (!isString) {
+            input = sc.nextLine();
+            if (input.length() > 0) {
+                isString = true;
+            } else {
+                System.out.println(Pranesimai.BLOGA_IVESTIS.pranesimas);
+            }
+        }
+        return input;
+    }
+
+    public void pakeistiIrasus(ArrayList<Irasas> irasas) {
+        if (irasas != null && irasas.size() > 0) {
+            setIrasas(irasas);
+        } else {
+            System.out.println(Pranesimai.FAILO_KLAIDA.pranesimas);
+        }
+    }
+
     public double balansas(){
             return gautiVisasPajamas() - gautiVisasIslaidas();
+    }
+
+    public void setIrasas(ArrayList<Irasas> irasas) {
+        this.irasas = irasas;
     }
 }
